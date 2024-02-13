@@ -67,15 +67,15 @@ function handleTouchMove(evt) {
   if (Math.abs(xDiff) > Math.abs(yDiff)) {
     /*most significant*/
     if (xDiff > 0) {
-      rightMove();
-    } else {
       leftMove();
+    } else {
+      rightMove();
     }
   } else {
     if (yDiff > 0) {
-      downMove();
-    } else {
       upMove();
+    } else {
+      downMove();
     }
   }
   /* reset values */
