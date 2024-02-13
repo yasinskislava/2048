@@ -1,5 +1,10 @@
 const outList = document.querySelector(".outList");
 const arr = [];
+const colors = [];
+colors[4] = "#dcf3aa";colors[8] = "#aaf3b4";colors[16] = "#aaf3e0";colors[32] = "#aad0f3";colors[64] = "#b7aaf3";colors[128] = "#e0aaf3";
+colors[256] = "#f3aae4";colors[512] = "#f3aaaa";colors[1024] = "#e9d58e";colors[2048] = "#b1e98e";colors[4096] = "#8ee9b2";
+colors[8192] = "#8ed2e9";colors[16384] = "#998ee9";colors[32768] = "#e98ee6";colors[65536] = "#e98e8e";colors[131072] = "#37ece9";
+
 for (let i = 0; i <= 3; i++) {
   arr.push([]);
   for (let j = 0; j <= 3; j++) {
@@ -9,7 +14,6 @@ for (let i = 0; i <= 3; i++) {
 function generateBlock() {
   const x = Math.floor(Math.random() * 4);
   const y = Math.floor(Math.random() * 4);
-  console.log(x, y);
   if (arr[x][y] !== 0) {
     generateBlock();
   } else {
@@ -67,14 +71,18 @@ function handleTouchMove(evt) {
   if (Math.abs(xDiff) > Math.abs(yDiff)) {
     /*most significant*/
     if (xDiff > 0) {
+      combineLeft();
       leftMove();
     } else {
+      combineRight();
       rightMove();
     }
   } else {
     if (yDiff > 0) {
+      combineUp();
       upMove();
     } else {
+      combineDown();
       downMove();
     }
   }
@@ -87,12 +95,16 @@ function handleTouchMove(evt) {
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowUp") {
+    combineUp();
     upMove();
   } else if (e.key === "ArrowDown") {
+    combineDown();
     downMove();
   } else if (e.key === "ArrowRight") {
+    combineRight();
     rightMove();
   } else if (e.key === "ArrowLeft") {
+    combineLeft();
     leftMove();
   } else {
     return;
@@ -199,3 +211,96 @@ function preventMotion(event) {
 }
 
 ////////////////////////////////////////////////////////////////
+
+function combineUp() {
+  for (let i = 0; i <= 2; i++) {
+    for (let j = 0; j <= 3; j++) {
+      if (arr[i][j] === 0) continue;
+      for (let k = i + 1; k <= 3; k++) {
+        if (arr[k][j] === 0) continue;
+        if (arr[k][j] !== arr[i][j]) break;
+        else if (arr[k][j] === arr[i][j]) {
+          moveBlock(k, 1, i, j);
+          c1 = 1;
+          break;
+        }
+      }
+    }
+  }
+}
+
+function combineDown() {
+  for (let i = 3; i >= 1; i--) {
+    for (let j = 0; j <= 3; j++) {
+      if (arr[i][j] === 0) continue;
+      for (let k = i - 1; k >= 0; k--) {
+        if (arr[k][j] === 0) continue;
+        if (arr[k][j] !== arr[i][j]) break;
+        else if (arr[k][j] === arr[i][j]) {
+          moveBlock(k, 1, i, j);
+          c2 = 1;
+          break;
+        }
+      }
+    }
+  }
+}
+
+function combineLeft() {
+  for (let i = 0; i <= 3; i++) {
+    for (let j = 0; j <= 2; j++) {
+      if (arr[i][j] === 0) continue;
+      for (let k = j + 1; k <= 3; k++) {
+        if (arr[i][k] === 0) continue;
+        if (arr[i][k] !== arr[i][j]) break;
+        else if (arr[i][k] === arr[i][j]) {
+          moveBlock(k, 2, i, j);
+          c3 = 1;
+          break;
+        }
+      }
+    }
+  }
+}
+
+function combineRight() {
+  for (let i = 0; i <= 3; i++) {
+    for (let j = 3; j >= 1; j--) {
+      if (arr[i][j] === 0) continue;
+      for (let k = j - 1; k >= 0; k--) {
+        if (arr[i][k] === 0) continue;
+        if (arr[i][k] !== arr[i][j]) break;
+        else if (arr[i][k] === arr[i][j]) {
+          moveBlock(k, 2, i, j);
+          c4 = 1;
+          break;
+        }
+      }
+    }
+  }
+}
+
+function moveBlock(k, phase, i, j) {
+  let num;
+  arr[i][j] *= 2;
+  if (phase === 1) {
+    arr[k][j] = 0;
+  } else {
+    arr[i][k] = 0;
+  }
+  if (arr[i][j] > 10000) {
+    num = `${parseInt(arr[i][j] / 1000)}k`;
+  } else {
+    num = arr[i][j];
+  }
+  const mainBlock = document.getElementById(`row${i}col${j}`);
+  mainBlock.textContent = num;
+  mainBlock.style.background = colors[arr[i][j]];
+  let block;
+  if (phase === 1) {
+    block = document.getElementById(`row${k}col${j}`);
+  } else {
+    block = document.getElementById(`row${i}col${k}`);
+  }
+  block.parentNode.removeChild(block);
+}
