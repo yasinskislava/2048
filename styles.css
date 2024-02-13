@@ -1,0 +1,55 @@
+.box {
+  width: 300px;
+  height: 300px;
+  background-color: #a0d2eb;
+  padding: 10px;
+  margin: auto;
+  margin-top: 20px;
+  position: relative;
+}
+.box li {
+  margin: 0;
+  padding: 0;
+  width: 67.5px;
+  height: 67.5px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.inList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.inList li {
+  background-color: #e5eaf5;
+}
+.outList {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.outList li {
+  width: 67.5px;
+  height: 67.5px;
+  background-color: #d0bdf4;
+  transition: 80ms;
+  text-align: center;
+  padding-top: 16px;
+  font-size: x-large;
+  font-family: "Roboto";
+  user-select: none;
+}
+ul {
+  width: 100%;
+  height: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: grey;
+}
