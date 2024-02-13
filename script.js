@@ -53,6 +53,7 @@ function handleTouchStart(evt) {
 }
 
 function handleTouchMove(evt) {
+  evt.preventDefault();
   if (!xDown || !yDown) {
     return;
   }
@@ -185,3 +186,16 @@ function rightMove() {
     c4 = 0;
   }
 }
+
+///////////////////////////////////////////////////////////////
+
+window.addEventListener("scroll", preventMotion, false);
+window.addEventListener("touchmove", preventMotion, false);
+
+function preventMotion(event) {
+  window.scrollTo(0, 0);
+  event.preventDefault();
+  event.stopPropagation();
+}
+
+////////////////////////////////////////////////////////////////
