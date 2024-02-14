@@ -1,16 +1,35 @@
 const outList = document.querySelector(".outList");
 const arr = [];
 const colors = [];
-colors[4] = "#dcf3aa";colors[8] = "#aaf3b4";colors[16] = "#aaf3e0";colors[32] = "#aad0f3";colors[64] = "#b7aaf3";colors[128] = "#e0aaf3";
-colors[256] = "#f3aae4";colors[512] = "#f3aaaa";colors[1024] = "#e9d58e";colors[2048] = "#b1e98e";colors[4096] = "#8ee9b2";
-colors[8192] = "#8ed2e9";colors[16384] = "#998ee9";colors[32768] = "#e98ee6";colors[65536] = "#e98e8e";colors[131072] = "#37ece9";
+colors[4] = "#dcf3aa";
+colors[8] = "#aaf3b4";
+colors[16] = "#aaf3e0";
+colors[32] = "#aad0f3";
+colors[64] = "#b7aaf3";
+colors[128] = "#e0aaf3";
+colors[256] = "#f3aae4";
+colors[512] = "#f3aaaa";
+colors[1024] = "#e9d58e";
+colors[2048] = "#b1e98e";
+colors[4096] = "#8ee9b2";
+colors[8192] = "#8ed2e9";
+colors[16384] = "#998ee9";
+colors[32768] = "#e98ee6";
+colors[65536] = "#e98e8e";
+colors[131072] = "#37ece9";
+const gameOver = document.getElementById("game-over");
+const newGame = document.getElementById("new-game");
 
-for (let i = 0; i <= 3; i++) {
-  arr.push([]);
-  for (let j = 0; j <= 3; j++) {
-    arr[i][j] = 0;
+function clearList() {
+  for (let i = 0; i <= 3; i++) {
+    arr.push([]);
+    for (let j = 0; j <= 3; j++) {
+      arr[i][j] = 0;
+    }
   }
 }
+clearList();
+
 function generateBlock() {
   const x = Math.floor(Math.random() * 4);
   const y = Math.floor(Math.random() * 4);
@@ -304,3 +323,36 @@ function moveBlock(k, phase, i, j) {
   }
   block.parentNode.removeChild(block);
 }
+
+function endGameCheck() {
+  let ch = 0;
+  for (let i = 0; i <= 2; i++) {
+    for (let j = 0; j <= 3; j++) {
+      if (arr[i][j] === 0) return;
+      if (arr[i][j] === arr[i + 1][j]) {
+        ch++;
+      }
+    }
+  }
+  for (let i = 0; i <= 3; i++) {
+    for (let j = 0; j <= 2; j++) {
+      console.log(arr[i][j]);
+      if (arr[i][j] === 0) return;
+      if (arr[i][j] === arr[i][j + 1]) {
+        ch++;
+      }
+    }
+  }
+  if (ch === 0) {
+    clearList();
+    gameOver.style.display = "block";
+  }
+}
+
+newGame.addEventListener("click", () => {
+  outList.innerHTML = "";
+  generateBlock();
+  gameOver.style.display = "none";
+});
+
+setInterval(endGameCheck, 1000);
