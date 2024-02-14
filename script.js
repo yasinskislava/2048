@@ -336,7 +336,6 @@ function endGameCheck() {
   }
   for (let i = 0; i <= 3; i++) {
     for (let j = 0; j <= 2; j++) {
-      console.log(arr[i][j]);
       if (arr[i][j] === 0) return;
       if (arr[i][j] === arr[i][j + 1]) {
         ch++;
